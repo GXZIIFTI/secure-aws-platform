@@ -1,0 +1,22 @@
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.backup
+crash.log
+terraform.tfvars
+
+# AWS / Secrets
+*.pem
+*.key
+.env
+
+# OS / Editor
+.DS_Store
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+#image files
+*.png
