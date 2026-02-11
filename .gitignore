@@ -1,22 +1,25 @@
 # Terraform
 **/.terraform/*
-*.tfstate
-*.tfstate.backup
-crash.log
-terraform.tfvars
+**/*.tfstate
+**/*.tfstate.*
+**/.terraform.lock.hcl
+
+# Environment files
+.env
+.env.*
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules
+npm-debug.log
+
+# Logs
+*.log
 
 # AWS / Secrets
 *.pem
 *.key
 .env
-
-# OS / Editor
-.DS_Store
-.vscode/
-.idea/
-
-# Logs
-*.log
-
-#image files
-*.png
