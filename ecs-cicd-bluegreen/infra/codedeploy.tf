@@ -58,7 +58,7 @@ data "aws_iam_policy_document" "codedeploy_ecs_manage" {
   }
 
   statement {
-    sid = "AllowPassRolesForEcsTasks"
+    sid     = "AllowPassRolesForEcsTasks"
     actions = ["iam:PassRole"]
     resources = [
       aws_iam_role.ecs_task_execution.arn
@@ -151,7 +151,7 @@ resource "aws_iam_role_policy" "codedeploy_extra_ecs" {
 
 resource "aws_iam_role_policy_attachment" "codedeploy_attach" {
   role       = aws_iam_role.codedeploy_role.name
-  policy_arn  = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
 }
 
 resource "aws_codedeploy_app" "ecs" {

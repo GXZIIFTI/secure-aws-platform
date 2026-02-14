@@ -28,3 +28,18 @@ variable "container_name" {
   default = "app"
 }
 
+variable "github_org_repo" {
+  type    = string
+  default = "GXZIIFTI/secure-aws-platform"
+}
+
+variable "github_branch" {
+  type    = string
+  default = "main"
+}
+
+variable "codedeploy_bucket" {
+  description = "S3 bucket that stores CodeDeploy revision (appspec.yaml)"
+  type        = string
+}
+

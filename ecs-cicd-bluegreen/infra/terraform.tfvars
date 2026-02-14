@@ -1,0 +1,1 @@
+codedeploy_bucket = "codedeploy-revisions-123456"

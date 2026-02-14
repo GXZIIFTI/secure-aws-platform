@@ -105,9 +105,9 @@ resource "aws_ecs_service" "app" {
     type = "CODE_DEPLOY"
   }
   lifecycle {
-  ignore_changes = [task_definition]
+    ignore_changes = [task_definition, load_balancer]
   }
-  
+
   depends_on = [aws_lb_listener.http]
 }
 
