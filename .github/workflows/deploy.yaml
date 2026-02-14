@@ -45,12 +45,20 @@ jobs:
         run: |
           python - << 'PY'
           import json, os
+
           sha = os.environ["GITHUB_SHA"]
           repo = os.environ["ECR_REPO_URI"]
           base_path = "ecs-cicd-bluegreen/deploy/taskdef.json"
 
           with open(base_path) as f:
             td = json.load(f)
+
+          # Remove keys that are not accepted by ecs register-task-definition
+          for k in [
+            "taskDefinitionArn", "revision", "status", "requiresAttributes",
+            "compatibilities", "registeredAt", "registeredBy", "tags"
+          ]:
+            td.pop(k, None)
 
           # Update container image
           td["containerDefinitions"][0]["image"] = f"{repo}:{sha}"
@@ -68,7 +76,8 @@ jobs:
 
           with open("taskdef.rendered.json", "w") as f:
             json.dump(td, f, indent=2)
-          print("Rendered taskdef.rendered.json")
+
+          print("Rendered taskdef.rendered.json (sanitized)")
           PY
 
       - name: Register new ECS task definition revision
