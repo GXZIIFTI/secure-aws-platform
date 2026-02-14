@@ -1,0 +1,49 @@
+{
+    "containerDefinitions": [
+        {
+            "name": "app",
+            "image": "134051051665.dkr.ecr.us-east-1.amazonaws.com/ecs-bluegreen-app:latest",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "containerPort": 3000,
+                    "hostPort": 3000,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "APP_VERSION",
+                    "value": "day3-green-test"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/ecs-bluegreen",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "app"
+                }
+            },
+            "systemControls": []
+        }
+    ],
+    "family": "ecs-bluegreen-task",
+    "executionRoleArn": "arn:aws:iam::134051051665:role/ecs-bluegreen-task-exec",
+    "networkMode": "awsvpc",
+    "volumes": [],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE",
+        "MANAGED_INSTANCES"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "256",
+    "memory": "512"
+}

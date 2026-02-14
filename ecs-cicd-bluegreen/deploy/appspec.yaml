@@ -1,0 +1,9 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: arn:aws:ecs:us-east-1:134051051665:task-definition/ecs-bluegreen-task:3
+        LoadBalancerInfo:
+          ContainerName: app
+          ContainerPort: 3000

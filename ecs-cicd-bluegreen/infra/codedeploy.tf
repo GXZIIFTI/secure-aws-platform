@@ -13,6 +13,65 @@ resource "aws_iam_role" "codedeploy_role" {
   assume_role_policy = data.aws_iam_policy_document.codedeploy_assume.json
 }
 
+data "aws_iam_policy_document" "codedeploy_elbv2_manage" {
+  statement {
+    sid = "AllowELBv2TrafficShiftForBlueGreen"
+    actions = [
+      "elasticloadbalancing:ModifyListener",
+      "elasticloadbalancing:ModifyRule",
+      "elasticloadbalancing:RegisterTargets",
+      "elasticloadbalancing:DeregisterTargets"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid = "AllowELBv2Describe"
+    actions = [
+      "elasticloadbalancing:DescribeListeners",
+      "elasticloadbalancing:DescribeRules",
+      "elasticloadbalancing:DescribeTargetGroups",
+      "elasticloadbalancing:DescribeTargetHealth",
+      "elasticloadbalancing:DescribeLoadBalancers"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_role_policy" "codedeploy_elbv2_manage" {
+  name   = "${var.project_name}-codedeploy-elbv2-manage"
+  role   = aws_iam_role.codedeploy_role.id
+  policy = data.aws_iam_policy_document.codedeploy_elbv2_manage.json
+}
+
+data "aws_iam_policy_document" "codedeploy_ecs_manage" {
+  statement {
+    sid = "AllowEcsBlueGreenTaskSetManagement"
+    actions = [
+      "ecs:CreateTaskSet",
+      "ecs:UpdateServicePrimaryTaskSet",
+      "ecs:DeleteTaskSet",
+      "ecs:DescribeTaskSets",
+      "ecs:UpdateService"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid = "AllowPassRolesForEcsTasks"
+    actions = ["iam:PassRole"]
+    resources = [
+      aws_iam_role.ecs_task_execution.arn
+    ]
+  }
+}
+
+resource "aws_iam_role_policy" "codedeploy_ecs_manage" {
+  name   = "${var.project_name}-codedeploy-ecs-manage"
+  role   = aws_iam_role.codedeploy_role.id
+  policy = data.aws_iam_policy_document.codedeploy_ecs_manage.json
+}
+
 data "aws_iam_policy_document" "codedeploy_extra_ecs" {
   statement {
     sid = "AllowDescribeECSServiceForBlueGreen"
@@ -52,6 +111,35 @@ data "aws_iam_policy_document" "codedeploy_extra_ecs" {
     ]
     resources = ["*"]
   }
+}
+
+data "aws_iam_policy_document" "codedeploy_s3_read" {
+  statement {
+    sid = "AllowReadRevisionBundle"
+    actions = [
+      "s3:GetObject",
+      "s3:GetObjectVersion"
+    ]
+    resources = [
+      "arn:aws:s3:::codedeploy-revisions-123456/*"
+    ]
+  }
+
+  statement {
+    sid = "AllowListBucket"
+    actions = [
+      "s3:ListBucket"
+    ]
+    resources = [
+      "arn:aws:s3:::codedeploy-revisions-123456"
+    ]
+  }
+}
+
+resource "aws_iam_role_policy" "codedeploy_s3_read" {
+  name   = "${var.project_name}-codedeploy-s3-read"
+  role   = aws_iam_role.codedeploy_role.id
+  policy = data.aws_iam_policy_document.codedeploy_s3_read.json
 }
 
 resource "aws_iam_role_policy" "codedeploy_extra_ecs" {

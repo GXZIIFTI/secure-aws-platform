@@ -68,7 +68,7 @@ resource "aws_ecs_task_definition" "app" {
         { containerPort = local.container_port, hostPort = local.container_port, protocol = "tcp" }
       ]
       environment = [
-        { name = "APP_VERSION", value = "day2-latest" }
+        { name = "APP_VERSION", value = "day3-green-test" }
       ]
       logConfiguration = {
         logDriver = "awslogs"
@@ -104,7 +104,10 @@ resource "aws_ecs_service" "app" {
   deployment_controller {
     type = "CODE_DEPLOY"
   }
-
+  lifecycle {
+  ignore_changes = [task_definition]
+  }
+  
   depends_on = [aws_lb_listener.http]
 }
 
