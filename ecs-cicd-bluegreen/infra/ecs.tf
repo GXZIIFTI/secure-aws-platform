@@ -43,7 +43,7 @@ resource "aws_iam_role" "ecs_task_execution" {
 
 resource "aws_iam_role_policy_attachment" "ecs_task_exec_attach" {
   role       = aws_iam_role.ecs_task_execution.name
-  policy_arn  = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
 locals {
@@ -96,9 +96,13 @@ resource "aws_ecs_service" "app" {
   }
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.app_tg.arn
+    target_group_arn = aws_lb_target_group.app_tg_blue.arn
     container_name   = local.container_name
     container_port   = local.container_port
+  }
+
+  deployment_controller {
+    type = "CODE_DEPLOY"
   }
 
   depends_on = [aws_lb_listener.http]
