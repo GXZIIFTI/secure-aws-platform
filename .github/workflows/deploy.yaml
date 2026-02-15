@@ -125,7 +125,7 @@ jobs:
       - name: Wait for CodeDeploy to finish
         run: |
           ID="${{ steps.cd.outputs.DEPLOYMENT_ID }}"
-          for i in {1..60}; do
+          for i in {1..120}; do
             STATUS=$(aws deploy get-deployment \
               --deployment-id "$ID" \
               --region ${AWS_REGION} \

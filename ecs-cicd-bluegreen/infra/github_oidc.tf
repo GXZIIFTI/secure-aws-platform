@@ -67,7 +67,11 @@ data "aws_iam_policy_document" "github_actions_policy" {
       "codedeploy:CreateDeployment",
       "codedeploy:GetDeployment",
       "codedeploy:GetDeploymentGroup",
-      "codedeploy:ListDeployments"
+      "codedeploy:ListDeployments",
+      "codedeploy:GetDeploymentConfig",
+      "codedeploy:RegisterApplicationRevision",
+      "codedeploy:ListApplicationRevisions",
+      "codedeploy:GetApplicationRevision"
     ]
     resources = ["*"]
   }
